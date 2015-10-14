@@ -39,6 +39,16 @@
 			margin: 0px;
 			padding: 0px;
 		}
+		div.menu{
+    position: fixed;
+    margin: 0px;
+    padding: 10px;
+    top: 0px;
+    right: 0px;
+    width: 250px;
+    height: 500px;
+    background: rgba(255,255,255,.8);
+}
 	</style>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -52,6 +62,13 @@
 		<p class="tooltip-text" id="title">This is the title</p>
 		<p class="tooltip-text" id="price">This is the price</p>
 	</div>
+	<div class="menu">
+    <p><h4>DMC Web Stack</h4></p>
+    <form>
+        <p><input type="checkbox" id="heatmap">Heat Map</p>
+        <p><input type="button" value="Update Data" onclick="updateData()"></p>
+    </form>
+</div>
 
 	<script type="text/javascript">
 
@@ -65,17 +82,17 @@
 
 		//this is the OpenStreetMap tile implementation
 
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
+		//L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    		//attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		//}).addTo(map);
 
 		//uncomment for Mapbox implementation, and supply your own access token
 
-		// L.tileLayer('https://api.tiles.mapbox.com/v4/{mapid}/{z}/{x}/{y}.png?access_token={accessToken}', {
-		// 	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-		// 	mapid: 'mapbox.light',
-		// 	accessToken: [INSERT YOUR TOKEN HERE!]
-		// }).addTo(map);
+		L.tileLayer('https://api.tiles.mapbox.com/v4/{mapid}/{z}/{x}/{y}.png?access_token={accessToken}', {
+		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+		mapid: 'mapbox.light',
+		accessToken: 'pk.eyJ1IjoiamxjMjI3MCIsImEiOiJjaWYzZ2NqMDcybWdtdDBtNTNwbTlscnQ3In0.4mwNny10vELbwubBcvMZDQ'
+		}).addTo(map);
 
 		//create variables to store a reference to svg and g elements
 
@@ -94,6 +111,7 @@
 		var transform = d3.geo.transform({point: projectStream});
 		var path = d3.geo.path().projection(transform);
 
+	  	function updateData(){
 	  	d3.json("/getData/", function(data) {
 
 			//create placeholder circle geometry and bind it to data
@@ -145,7 +163,8 @@
 			map.on("viewreset", update);
 
 		});
-
+};
+updateData();
 	</script>
 
 </body>
