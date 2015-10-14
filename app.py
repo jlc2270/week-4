@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import render_template
+from flask import request
 
 import json
 import time
@@ -18,7 +19,7 @@ def index():
 def getData():
 	
 	client = pyorient.OrientDB("localhost", 2424)
-	session_id = client.connect("root", "password")
+	session_id = client.connect("root", "gringoThunder")
 	db_name = "soufun"
 	db_username = "admin"
 	db_password = "admin"
@@ -29,12 +30,13 @@ def getData():
 	else:
 		print "database [" + db_name + "] does not exist! session ending..."
 		sys.exit()
-		
-	lat1 = 22.532498
-	lat2 = 22.552317
-
-	lng1 = 114.044329
-	lng2 = 114.076644
+	
+	lat1 = str(request.args.get('lat1'))
+        lng1 = str(request.args.get('lng1'))
+        lat2 = str(request.args.get('lat2'))
+        lng2 = str(request.args.get('lng2'))
+        print "received coordinates: [" + lat1 + ", " + lat2 + "], [" + lng1 + ", " + lng2 + "]"
+        
 
 	query = 'SELECT FROM Listing WHERE latitude BETWEEN {} AND {} AND longitude BETWEEN {} AND {}'
 
